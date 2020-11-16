@@ -68,6 +68,12 @@ Fraction::Fraction(int num, int denum)
     denumerator = denum/gcd;
 }
 
+Fraction::Fraction(const Fraction& fraction)
+{
+    numerator = fraction.numerator;
+    denumerator = fraction.denumerator;
+}
+
 Fraction Fraction::operator*(const Fraction& another)
 {
     return Fraction(numerator*another.numerator, denumerator*another.denumerator);

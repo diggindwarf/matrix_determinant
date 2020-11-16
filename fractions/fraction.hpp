@@ -5,10 +5,14 @@
 namespace Numbers {
 class Fraction
 {
-    public:
+public:
     Fraction();
     Fraction(int number);
     Fraction(int numerator, int denumerator);
+    //copy constructor
+    Fraction(const Fraction& fraction);
+    //destructor
+    ~Fraction() = default;
     //define own operators for basic math operations;
     // as shown: return value of this operation is just another
     // Fraction (result of operation)
@@ -23,7 +27,7 @@ class Fraction
     bool operator> (const Fraction& another);
     //friend operator<< for proper printing of fraction when using output stream.
     friend std::ostream& operator<<(std::ostream& os, const Fraction& fraction);
-    private:
+private:
     int numerator;
     int denumerator;
 };

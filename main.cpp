@@ -5,6 +5,9 @@
 #include <vector>
 #include <utility>
 
+// C library 
+#include <getopt.h>
+
 // TODO ===================================================================
 // add function for passing fractions (somekind of parser)
 // add function for passing whole matrix...
@@ -34,6 +37,7 @@ int main(int argc, char** argv)
     // in this program, size of this matrix is unsigned int.
     // if value passed to main is wrong (not integer or negative)
     // program will exit with warning message.
+    while ((c = getopt_long_only(argc, argv) "", ))
     unsigned int size = 4;
     Matrix matrix;
     //standard for loop, with counter i;
