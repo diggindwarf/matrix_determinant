@@ -2,11 +2,11 @@
 #include "determinant_calculation/calc_det.hpp"
 
 #include <iostream>
-#include <vector>
+#include <limits>
+#include <string>
+#include <sstream>
 #include <utility>
-
-// C library 
-#include <getopt.h>
+#include <vector>
 
 // TODO ===================================================================
 // add function for passing fractions (somekind of parser)
@@ -23,6 +23,7 @@ void print_matrix(const Matrix& matrix)
     // whole type of reference on loop ( which is std::vector<Fraction>
     // for row, and Fraction for element )
     // https://en.cppreference.com/w/cpp/language/auto
+    std::cout << "Matrix:" << std::endl;
     for ( auto& row: matrix ) {
         for ( auto& element: row ) {
             std::cout << element << " ";
@@ -31,28 +32,57 @@ void print_matrix(const Matrix& matrix)
     }
 }
 
+Matrix parse_matrix(int size)
+{
+    Matrix matrix;
+    //standard for loop, with counter i;
+    for (int i = 0; i < size; i++) {
+        matrix.push_back(std::vector<Fraction>());
+        std::string input;
+        std::cout << "row " << i+1 << ":";
+        std::getline(std::cin, input);
+        std::cin.clear();
+        std::istringstream iss(input);
+        int number;
+
+        while (iss >> number) {
+            if (iss.fail()) {
+                std::cerr << "Incorrect value in row provided! Please pass proper row (INTEGERS ONLY)!";
+                matrix.pop_back();
+                i--;
+            } else {
+            matrix[i].push_back(Fraction(number));
+            }
+        }
+    }
+    return matrix;
+}
+
 int main(int argc, char** argv)
 {
     // Determinant can only be calculated from square matrixes;
-    // in this program, size of this matrix is unsigned int.
-    // if value passed to main is wrong (not integer or negative)
-    // program will exit with warning message.
-    while ((c = getopt_long_only(argc, argv) "", ))
-    unsigned int size = 4;
-    Matrix matrix;
-    //standard for loop, with counter i;
-    for (int i = 0; i < size; i++){
-        std::cout << i+1 << " row: " << std::endl;
-        // here we are adding new row of matrix.
-        matrix.push_back(std::vector<Fraction>());
-        for (int j = 0; j<size; j++) {
-            int a;
-            std::cin >> a;
-            // here, i am refering to specific row within matrix.
-            matrix[i].push_back(Fraction(a));
-        }
+    // program will exit with warning message
+    std::cout << "What is size of matrix?" << std::endl;
+    int a;
+    std::cin >> a;
+    while(!std::cin.good() || a <= 0){
+        std::cerr << "Incorrect value provided! Value must be positive integer!"
+            << "Enter positive integer ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin >> a;
     }
-    std::cout << matrix.size();
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    auto matrix = parse_matrix(a);
     print_matrix(matrix);
-    std::cout << "determinant value: " << calculate_determinant(matrix);
+
+    try {
+        std::cout << "determinant value is: " << calculate_determinant(matrix) << std::endl;
+    } catch (std::runtime_error& e) {
+        std::cerr << "program meet runtime problem: " << e.what() << std::endl;
+        return 1;
+    }
+    // return 0 in main means, that program has succesfully finish job.
+    return 0;
 }
