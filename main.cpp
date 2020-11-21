@@ -127,7 +127,7 @@ int run_program()
     } catch (std::runtime_error& e) {
         std::cerr << "program met runtime problem: " << e.what() << std::endl;
         // if return value for main is different than 0, it means that there was a problem.
-        // Program does not succesfully finish job.
+        // Program does not successfully finish job.
         return 1;
     }
     // print determinant value.
@@ -136,7 +136,7 @@ int run_program()
         "determinant of above matrix is equal: " <<
         determinant <<
         std::endl;
-    // return 0 in main means that program does succesfully finish job.
+    // return 0 in main means that program does successfully finish job.
     return 0;
 }
 
