@@ -1,5 +1,6 @@
 #pragma once
 // this include is needed because of defined operator<< (std::ostream)
+#include <cstdint>
 #include <iostream>
 
 namespace Numbers {
@@ -7,8 +8,8 @@ class Fraction
 {
 public:
     Fraction();
-    Fraction(long long number);
-    Fraction(long long numerator, long long denumerator);
+    Fraction(int64_t number);
+    Fraction(int64_t numerator, int64_t denumerator);
     // copy constructor
     Fraction(const Fraction& fraction);
     // destructor
@@ -30,7 +31,7 @@ public:
     // friend operator<< for proper printing of fraction when using output stream.
     friend std::ostream& operator<<(std::ostream& os, const Fraction& fraction);
 private:
-    long long numerator;
-    long long denumerator;
+    int64_t numerator;
+    int64_t denumerator;
 };
 } // namespace Numbers

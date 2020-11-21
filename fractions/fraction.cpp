@@ -1,8 +1,9 @@
 #include "fraction.hpp"
 
 #include <algorithm>
-#include <stdexcept>
 #include <cmath>
+#include <cstdint>
+#include <stdexcept>
 
 namespace Numbers {
 
@@ -10,11 +11,11 @@ namespace Numbers {
 namespace {
     // calculate greatest common denominator
 
-    long long binary_gcd(long long first, long long second)
+    uint32_t binary_gcd(int64_t first, int64_t second)
     {
-        unsigned long long a = std::abs(first);
-        unsigned long long b = std::abs(second);
-        unsigned int shift = 0;
+        uint32_t a = std::abs(first);
+        uint32_t b = std::abs(second);
+        uint8_t shift = 0;
 
         if (a == 0) return b;
         if (b == 0) return a;
@@ -40,7 +41,7 @@ namespace {
     }
 
     // calculate the lowest common multiplication.
-    long long lcm(long long a, long long b)
+    int64_t lcm(int64_t a, uint64_t b)
     {
         return (a * b) / binary_gcd(a,b);
     }
@@ -49,10 +50,10 @@ namespace {
 Fraction::Fraction() : Fraction(0,1)
 {}
 
-Fraction::Fraction(long long number): Fraction(number,1)
+Fraction::Fraction(int64_t number): Fraction(number,1)
 {}
 
-Fraction::Fraction(long long num, long long denum)
+Fraction::Fraction(int64_t num, int64_t denum)
 {
     // denumerator cannot be 0!
     // here we throw self defined exception.
@@ -91,8 +92,8 @@ Fraction Fraction::operator*(const Fraction& another)const
 
 Fraction Fraction::operator+(const Fraction& another) const
 {
-    long long a = (numerator * another.denumerator) + (another.numerator * denumerator);
-    long long b = (denumerator * another.denumerator);
+    int64_t a = (numerator * another.denumerator) + (another.numerator * denumerator);
+    int64_t b = (denumerator * another.denumerator);
     return Fraction(a, b);
 }
 
