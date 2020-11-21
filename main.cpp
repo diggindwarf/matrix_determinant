@@ -32,8 +32,8 @@ void print_matrix(const Matrix& matrix)
         std::cout << std::endl;
     }
 }
-// function which parse string provided by user: it checks 
-// if size is proper, and  
+// function which parses string provided by user: it checks 
+// if size of row is proper, and if each value is correct
 std::vector<Fraction> parse_row(std::string& row, int size) 
 {
     std::istringstream iss(row);
@@ -46,16 +46,17 @@ std::vector<Fraction> parse_row(std::string& row, int size)
         if (*str.begin() == '-') {
             // iterator to first element in char array under string.
             auto first = str.begin();
-            // first in algorithm below must be digit - if negative value
-            // is provided than we should start from second number.
+            // move to second element of string.
             first++;
+            // create new string starting from second element.
+            // and pass it to str variable.
             str = std::string(first, str.end());
             is_positive = false;
         }
         auto is_digit = [](unsigned char c){ return std::isdigit(c); };
         // we are checking if str is empty, or is not a number.
         // std::all_of(str.begin(), str.end(), is_digit)
-        // is checking if all elements in string are digits.
+        // is checking if all elements in str are digits.
         if (str.empty() || !std::all_of(str.begin(), str.end(), is_digit)) {
             throw std::runtime_error("Incorrect value in row provided!");
         } else {
@@ -64,8 +65,8 @@ std::vector<Fraction> parse_row(std::string& row, int size)
             row_vector.push_back(Fraction(number));
         }
     }
-    // for square matrixes size of a row must be equal to number of rows (7x7 by example.)
-    // also - all rows in any matrix must be same size.
+    // for square matrixes, the size of a row must be equal to number of rows (eg. 7x7)
+    // also - all rows in any matrix must be the same size.
     if (row_vector.size() != size) {
         throw std::runtime_error("Incorect number of elements!");
     }
@@ -75,22 +76,24 @@ std::vector<Fraction> parse_row(std::string& row, int size)
 Matrix parse_matrix(int size)
 {
     Matrix matrix;
-    //standard for loop, with counter i;
+    // standard for loop, with i counter;
     for (int i = 0; i < size; i++) {
         std::string input;
         std::cout << "row " << i+1 << ":";
-        // here we are trying to get proper value of row in matrix from user.
-        // this is: space separated integer values.
+        // here we are trying to get proper value of next matrix row from user.
+        // correct form is: space separated integer values.
         std::getline(std::cin, input);
         try {
-            // if parse_row does not throw error - than push back new row to matrix.
+            // if parse_row does not throw error - then push back new row to matrix.
             matrix.push_back(parse_row(input, size));
         } catch (std::runtime_error& e) {
-            // if runtime error was thrown, write to console message of this error.
+            // if runtime error was thrown, write error message to console.
+            // this error means that the row provided by user was not correct.
             std::cout <<
                 e.what() <<
                 std::endl;
-            // decrement i value, for user to pass proper value of matrix row.
+            // decrement i value. User can once again pass value of matrix row.
+            // this will repeat loop iteration until user passes correct value.
             --i;
         }
     }
@@ -99,9 +102,8 @@ Matrix parse_matrix(int size)
 
 int run_program()
 {
-    // Determinant can only be calculated from square matrixes;
-    // program will exit with warning message
-    std::cout << "What is size of matrix?" << std::endl;
+    // Determinant can only be calculated from square matrixes.
+    std::cout << "What is the size of matrix?" << std::endl;
     int a;
     std::cin >> a;
     while (!std::cin.good() || a <= 0) {
@@ -120,11 +122,12 @@ int run_program()
     print_matrix(matrix);
     Fraction determinant;
     try {
+        // try to calculate determinant of provided matrix
         determinant = calculate_determinant(matrix);
-    } catch ( std::runtime_error& e ) {
-        std::cerr << "program meet runtime problem: " << e.what() << std::endl;
-        // if return value for main is different than 0, it means, that there was problem.
-        // and program does not succesfully finish job.
+    } catch (std::runtime_error& e) {
+        std::cerr << "program met runtime problem: " << e.what() << std::endl;
+        // if return value for main is different than 0, it means that there was a problem.
+        // Program does not succesfully finish job.
         return 1;
     }
     // print determinant value.
@@ -133,7 +136,7 @@ int run_program()
         "determinant of above matrix is equal: " <<
         determinant <<
         std::endl;
-    // return 0 in main means, that program has succesfully finish job.
+    // return 0 in main means that program does succesfully finish job.
     return 0;
 }
 

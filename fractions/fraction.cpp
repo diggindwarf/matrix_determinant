@@ -39,10 +39,10 @@ namespace {
         return a << shift;
     }
 
-    // calculate lowest common multiplication.
+    // calculate the lowest common multiplication.
     long long lcm(long long a, long long b)
     {
-        return (a*b)/binary_gcd(a,b);
+        return (a * b) / binary_gcd(a,b);
     }
 }
 
@@ -56,16 +56,16 @@ Fraction::Fraction(long long num, long long denum)
 {
     // denumerator cannot be 0!
     // here we throw self defined exception.
-    if (denum==0) {
+    if (denum == 0) {
         throw std::runtime_error("denominator can't be zero!");
     }
     auto gcd = binary_gcd(num,denum);
-    if (denum<0) {
-        numerator = -num/gcd;
-        denumerator = -denum/gcd;
+    if (denum < 0) {
+        numerator = -num / gcd;
+        denumerator = -denum / gcd;
     } else {
-        numerator = num/gcd;
-        denumerator = denum/gcd;
+        numerator = num / gcd;
+        denumerator = denum / gcd;
     }
 }
 // copy constructor (unused for this project)
@@ -81,7 +81,7 @@ Fraction Fraction::abs() const
     // then: if a ? b : c 
     // both (b and c) value category (cv) and type in return of ternary(conditional) operator 
     // should be same. i need to cast it to const.
-    return numerator>=0 ? *this : const_cast<const Fraction&&>(Fraction(-numerator, denumerator));
+    return (numerator >= 0)? *this : const_cast<const Fraction&&>(Fraction(-numerator, denumerator));
 }
 
 Fraction Fraction::operator*(const Fraction& another)const
@@ -91,30 +91,29 @@ Fraction Fraction::operator*(const Fraction& another)const
 
 Fraction Fraction::operator+(const Fraction& another) const
 {
-    // this will be shorten in constructor... might be 
-    long long a = (numerator*another.denumerator) + (another.numerator*denumerator);
-    long long b = (denumerator*another.denumerator);
+    long long a = (numerator * another.denumerator) + (another.numerator * denumerator);
+    long long b = (denumerator * another.denumerator);
     return Fraction(a, b);
 }
 
 Fraction Fraction::operator-(const Fraction& another) const
 {
-    return this->operator+(Fraction(-another.numerator, another.denumerator));
+    return this->operator + (Fraction(-another.numerator, another.denumerator));
 }
 
 Fraction Fraction::operator/(const Fraction& another) const 
 {
-    // you can't devide by 0 - throw an error.
+    // you can't divide by 0 - throw an error.
     if (another.numerator == 0) {
         throw std::runtime_error("can't devide by 0!");
     }
-    return this->operator*(Fraction(another.denumerator, another.numerator));
+    return this->operator * (Fraction(another.denumerator, another.numerator));
 }
 
 bool Fraction::operator<(const Fraction& another) const 
 {
     const auto mul = lcm(another.denumerator, denumerator);
-    return numerator*(mul/denumerator) < another.numerator*(mul/another.denumerator);
+    return numerator * (mul/denumerator) < another.numerator*(mul/another.denumerator);
 }
 
 bool Fraction::operator>(const Fraction& another) const
@@ -134,12 +133,12 @@ std::ostream& operator<<(std::ostream& os, const Fraction& fraction)
 
 bool Fraction::operator!=(const Fraction& another) const
 {
-    return !this->operator==(another);
+    return !this->operator == (another);
 }
 
 bool Fraction::operator==(const Fraction& another) const
 {
-    return (this->numerator == another.numerator) && 
+    return (this->numerator == another.numerator) &&
         (this->denumerator == another.denumerator);
 }
 

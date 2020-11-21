@@ -21,8 +21,8 @@ class DegeneratedMatrixException : std::exception
 } // namespace Exceptions
 
 // helper function for cleanup.
-// fuction return index of row with largest value
-// in yet column within not parsed rows.
+// fuction returns index of row with largest value
+// in column from yet not parsed rows.
 unsigned int get_row_to_swap_with_current(
     const Matrix& matrix,
     const int current_row)
@@ -41,6 +41,7 @@ unsigned int get_row_to_swap_with_current(
 }
 
 // Lower and Upper matrixes are stored at same collection.
+// (std::vector<std::vector<Fraction>)
 // (since both are triangular)
 void process_LU_decomposition(
     Matrix& matrix,
@@ -67,8 +68,8 @@ std::pair<Matrix, bool> LU_decompose(const Matrix& matrix)
         if (perm_mat.at(max_value_row).at(row) == Fraction()) {
             throw Exceptions::DegeneratedMatrixException();
         }
-        // if row with biggest number on index same as row number
-        // is different than current row, than swap rows.
+        // if row with the biggest number on index same as current iteration
+        // is different than current row, then swap rows.
         if ( max_value_row != row ) {
             perm_mat[row].swap(perm_mat[max_value_row]);
             swap_count++;
@@ -82,12 +83,12 @@ Fraction LU_determinant_value(
     const Matrix& matrix,
     const bool sign)
 {
-    //neutral element of multiplication for beggining.
+    // neutral element of multiplication is assigned to determinant variable.
     Fraction determinant = Fraction(1);
     for (int i = 0; i < matrix.size(); i++) {
         // I could overload also *= operator for this manner, but
         // I do not see enough advantages.
-        // here we are calculating finally determinant - by multiplication of diagonal.
+        // finally, here we are calculating determinant - by multiplication of diagonal elements.
         determinant = determinant * matrix.at(i).at(i);
     }
     // sign is not "sign" before number: it only tells us, if we should 

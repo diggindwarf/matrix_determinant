@@ -1,5 +1,5 @@
 #pragma once
-// this include is needed because of defined operatator<< (std::ostream)
+// this include is needed because of defined operator<< (std::ostream)
 #include <iostream>
 
 namespace Numbers {
@@ -22,7 +22,7 @@ public:
     Fraction operator/(const Fraction& another) const;
     Fraction operator+(const Fraction& another) const;
     Fraction operator-(const Fraction& another) const;
-    // define own operators for value comparison.
+    // define own operators for fractions comparison.
     bool operator!=(const Fraction& another) const;
     bool operator==(const Fraction& another) const;
     bool operator<(const Fraction& another) const;
