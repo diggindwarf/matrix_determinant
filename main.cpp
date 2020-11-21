@@ -44,19 +44,19 @@ std::vector<Fraction> parse_row(std::string& row, int size)
         bool is_positive = true;
         // check if value is negative;
         if (*str.begin() == '-') {
-            // iterator to first char in char array under string.
+            // iterator to first element in char array under string.
             auto first = str.begin();
             // first in algorithm below must be digit - if negative value
             // is provided than we should start from second number.
             first++;
-            // if '-' was the only char in string - that we should throw
-            // an error.
             str = std::string(first, str.end());
             is_positive = false;
         }
         auto is_digit = [](unsigned char c){ return std::isdigit(c); };
-        //here is algorithm, which is checking if all values are digits.
-        if (!std::all_of(str.begin(), str.end(), is_digit)) {
+        // we are checking if str is empty, or is not a number.
+        // std::all_of(str.begin(), str.end(), is_digit)
+        // is checking if all elements in string are digits.
+        if (str.empty() || !std::all_of(str.begin(), str.end(), is_digit)) {
             throw std::runtime_error("Incorrect value in row provided!");
         } else {
             auto number = std::stoi(str);
